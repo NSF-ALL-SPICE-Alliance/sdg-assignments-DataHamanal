@@ -65,7 +65,7 @@ Note: it's very important to follow the coding syntax (make sure the package nam
 Let's double check to see if it installed correctly using the following code:
 
 ```{r}
-system.file(package = "tidyverse") # input the name of the package in quotes
+ # input the name of the package in quotes
 ```
 
 If you got a response giving you a file path - you're all set! You successfully installed your first package! 
@@ -96,11 +96,15 @@ Let's practice creating some variables:
 ```{r}
 my_name <- "Victoria DelaCruz" # character strings are stored within quotations
 my_name # run the name of your variable to see the output
+my-name <- "Hamana Leong"
+my_name <- "Hamana Leong"
 ```
 
 2. my_age
 ```{r}
 my_age = 20 # numeric values do not need any quotations
+
+my_age = 31
 my_age # run the name of your variable to see the output
 my_age + 5 # how old will you be in 5 years?
 ```
