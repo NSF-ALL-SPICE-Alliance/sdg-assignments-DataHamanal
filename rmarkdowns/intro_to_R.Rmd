@@ -99,6 +99,11 @@ my_name # run the name of your variable to see the output
 my-name <- "Hamana Leong"
 my_name <- "Hamana Leong"
 ```
+```{r}
+my_name <- "Hamana Leong"
+my_age = 31
+my_age + 5
+```
 
 2. my_age
 ```{r}
@@ -316,7 +321,13 @@ Notes:
 - In the filter example we just did, we are filtering for Regions that are EQUAL to "Oceania", hence the two equal signs. 
 
 #### <span style="color: red;">Challenge 3</span>
-Using the `filter()` function, filter for another region other than Oceania. Assign it to a variable named `new_region`. 
+Using the `filter()` function, filter for another region other than Oceania. Assign it to a variable named `new_region`.
+
+```{r}
+sdr_data %>% 
+  filter(regions_used_for_the_sdr == "")
+```
+
 
 **Important**
 
@@ -328,7 +339,7 @@ When executing the last 2 code chunks, notice that we did not use the assign arr
     
 ```{r}
 oceania_data <- sdr_data %>% 
-  filter(regions_used_for_the_sdr == "Oceania")
+  filter(regions_used_for_the_sdr == "OECD")
 ```
 
 Now, you will have a dataframe called *oceania_data* in your environment pane (top right of the screen) that you can click on
