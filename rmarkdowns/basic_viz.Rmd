@@ -8,6 +8,14 @@ output:
     toc_float: true
 ---
 
+
+```{r}
+library(here)
+library(tidyverse)
+library(janitor)
+library(vembedr)
+```
+
 <img src="`r here::here('logos/SpiceLogo1.png')`" width="240" /> <img src="`r here::here('logos/cifal_logo.png')`" width="200" />
 
 ### Today's Topics
@@ -92,15 +100,15 @@ In the following code, we're:
   - Using `geom_point()` to make a scatter plot where each point is a country and it's location on the graph is based on the country's SDG 3 scores and SDG 4 scores
 
 ```{r}
-ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score)) +
-  geom_point()
+ggplot(data = sdr_data, aes(x= goal_6_score, y = goal_4_score)) +
+  geom_hex()
 ```
 
 Awesome! What if we wanted to color the points/countries based on their region? Let's use the `color` argument to add some color to do so.
 
 ```{r}
-ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
-  geom_point()
+ggplot(data = sdr_data, aes(x= goal_4_score, y = goal_6_score, color = regions_used_for_the_sdr)) +
+  geom_hex()
 ```
 
 Interpretation:
@@ -122,14 +130,19 @@ Let's create one more scatter plot!
     - Let's pass goal_5_score to the color argument to color each point/country based on their SDG 5 score.
     
 ```{r}
-ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = goal_5_score)) +
-  geom_point()
+ggplot(data = sdr_data, aes(x= goal_11_score, y = goal_6_score, color = goal_9_score)) +
+  geom_hex()
 ```
 
 Cool! It seems that the darkest blue points (countries with the lowest SDG 5 scores) tend to have mid-range or low SDG 3 / SDG 4 scores as well. The lightest blue points (countries with the highest SDG 5 scores) tend to have high SDG 3 / SDG 4 scores as well. However, there are several countries that do not follow this trend.
 
 #### <span style="color: red;">Challenge 1</span>
 Create a scatterplot using two different SDG scores. Then, color the points by using a third SDG score. In a couple of sentences, describe what you see.
+
+```{r}
+ggplot(data = sdr_data, aes(x = goal_7_score, y = goal_13_score, color = goal_9_score)) + geom_point()
+```
+This graph shows that countries with high Goal 9 scores also have a low Goal 7 score.
 
 ### Bar Chart
 
@@ -152,15 +165,15 @@ Hmm... it looks like the country names are hard to read - there are too many of 
     - We'll create a new dataframe from our original dataframe, sdr_data, called lac_sdr_data that only includes countries in Latin America and the Carribean
 
 ```{r}
-lac_sdr_data <- sdr_data %>% 
-  filter(regions_used_for_the_sdr == "LAC") # filtering for LAC countries only
+MENA_sdr_data <- sdr_data %>% 
+  filter(regions_used_for_the_sdr == "MENA") # filtering for LAC countries only
 ```
 
 Now let's make a bar chart from our new dataframe `lac_sdr_data`
 
 ```{r}
-ggplot(lac_sdr_data, aes(x= goal_3_score, y = country)) +
-  geom_bar(stat = "identity") 
+ggplot(MENA_sdr_data, aes(x= goal_11_score, y = country)) +
+  geom_point(stat = "identity") 
 ```
 
 #### Faceted Bar Chart
@@ -179,9 +192,9 @@ As we talked about in ggplot, let's try to use faceting. Considering that region
 
 ```{r, fig.height=10}
 ggplot(sdr_data, aes(x= goal_3_score, y = country)) +
-  geom_bar(stat = "identity") +
+  geom_point(stat = "identity") +
   facet_wrap(~regions_used_for_the_sdr, scales = "free_y") + # faceting for regions
-  theme(axis.text.y = element_text(size = 4)) # adjusting text size of y-axis values
+  theme(axis.text.y = element_text(size = 8)) # adjusting text size of y-axis values
 ```
 
 Interpretation:
@@ -214,13 +227,22 @@ Each bar/bin represents a range of SDG 4 Scores. There are 30 bars/bins so each 
 
 This is great for looking at the distribution of Goal 4 scores, but let's explore further with adding another layer of visualization.
 
+
+```{r}
+ggplot(sdr_data, aes(x = goal_16_score, fill=regions_used_for_the_sdr)) + 
+  geom_histogram(bins=33, color="yellow")
+```
+
+
+
 ```{r}
 ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) + 
-  geom_histogram(bins=33, color="black")
-```
+  geom_histogram(bins=33, color="yellow""
 
 Interpretation:
 Countries that fall in the higher end of the Goal 4 spectrum belong to the OECD region, while countries in Sub-Saharan Africa lie towards the lower end. 
 
 #### <span style="color: red;">Challenge 3</span>
 Make a histogram for a different SDG score. Then, fill by region. In a couple of sentences, describe any interesting trends or what you notice from your new histogram.
+
+
