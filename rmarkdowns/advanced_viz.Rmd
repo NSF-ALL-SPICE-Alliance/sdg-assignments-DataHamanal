@@ -130,9 +130,37 @@ We can also double-click the boxes in the legend to only view the regions we're 
 Here is the code for a scatter plot you made in the last lesson:
 
 ```{r, warning = FALSE}
-ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
-  geom_point()
+goal_4_violin <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+  geom_point() +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  labs(title = "Distributions of SDG 4 Scores",
+       x = "SDG 4 Score",
+       y = "Number of Countries",
+       fill = "Region")
+
+ggplotly(goal_4_violin)
 ```
+
+
+```{r}
+goal_4_point <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  labs(title = "Distributions of SDG 4 Scores",
+       x = "SDG 4 Score",
+       y = "Number of Countries",
+       fill = "Region")
+
+ggplotly(goal_4_point)
+  
+
+```
+
+
+
 
 *Edit the code chunk above* that generates the plot to:
 
@@ -162,6 +190,16 @@ This takes a few fun steps to do
 ```{r}
 world <- ne_countries(scale = "medium", returnclass = "sf")
 ```
+
+
+```{r}
+library("rnaturalearthdata")
+```
+
+```{r}
+world <- ne_countries(scale = "medium", returnclass = "sf")
+```
+
 
 - Now we have a dataframe named *world* in our environment
   
@@ -262,7 +300,7 @@ mytext <- paste(
 leaflet(sdr_data_world_joined) %>% 
   addTiles()  %>% 
   setView( lat=10, lng=0 , zoom=2) %>%
-  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("YlOrRd", goal_7_score)(goal_7_score), label = mytext)
+  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("inferno", goal_10_score)(goal_10_score), label = mytext)
 ```
 #### <span style="color: red;">Challenge 2</span>
 
@@ -273,5 +311,9 @@ Can you edit the code chunk above that generates the map to:
   - Hint: [look under the RColorBrewer Palettes here](https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/)
     
 
+```{r}
+library("viridisLite")
+library("viridis")
+```
 
 
