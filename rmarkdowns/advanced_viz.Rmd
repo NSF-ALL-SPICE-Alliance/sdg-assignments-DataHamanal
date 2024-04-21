@@ -300,7 +300,7 @@ mytext <- paste(
 leaflet(sdr_data_world_joined) %>% 
   addTiles()  %>% 
   setView( lat=10, lng=0 , zoom=2) %>%
-  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("inferno", goal_10_score)(goal_10_score), label = mytext)
+  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("magma", goal_10_score)(goal_10_score), label = mytext)
 ```
 #### <span style="color: red;">Challenge 2</span>
 
