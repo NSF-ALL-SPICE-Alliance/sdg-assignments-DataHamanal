@@ -75,8 +75,8 @@ We start with the same exact code and add to it with `+`
 ```{r, message=FALSE, warning=FALSE}
 ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
-  theme_minimal() +
-  scale_fill_viridis_d() +
+  theme_dark() +
+  scale_fill_viridis_d(option = "magma") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
@@ -105,10 +105,10 @@ Interactive visualizations are a really exciting part of data science! Interacti
    
       
 ```{r}
-goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
-  geom_histogram() +
-  theme_minimal() +
-  scale_fill_viridis_d() +
+goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, y = goal_6_score, fill=regions_used_for_the_sdr)) +
+  geom_point() +
+  theme_dark() +
+  scale_fill_viridis_d(option = "inferno") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
@@ -130,23 +130,39 @@ We can also double-click the boxes in the legend to only view the regions we're 
 Here is the code for a scatter plot you made in the last lesson:
 
 ```{r, warning = FALSE}
-goal_4_violin <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+goal_4_scores <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, fill = regions_used_for_the_sdr)) +
   geom_point() +
   theme_minimal() +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "inferno") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
        fill = "Region")
 
-ggplotly(goal_4_violin)
+ggplotly(goal_4_scores)
+```
+
+
+```{r}
+goal_3_goal_4_scatter_plot <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr, lable = country)) +
+  geom_point() +
+  theme_minimal() +
+  scale_color_viridis_d(option = "inferno") +
+  labs(title = "Distributions of SDG 4 Scores",
+       x = "Goal 3 score",
+       y = "Goal 4 score",
+       color = "Region")
+
+ggplotly(goal_3_goal_4_scatter_plot)
 ```
 
 
 ```{r}
 goal_4_point <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
-  geom_point() +
-  scale_color_viridis_c() +
+  geom_point(aes(color = Species)) +
+  geom_smooth(aes(color = Species, fill = Species), method = "lm") + 
+  scale_color_viridis(discrete = TRUE, option = "D")+
+  scale_fill_viridis(discrete = TRUE) +
   theme_minimal() +
   theme(legend.position = "bottom") +
   labs(title = "Distributions of SDG 4 Scores",
