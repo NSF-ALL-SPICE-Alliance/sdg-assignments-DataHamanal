@@ -146,8 +146,8 @@ ggplotly(goal_4_scores)
 ```{r}
 goal_3_goal_4_scatter_plot <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr, lable = country)) +
   geom_point() +
-  theme_minimal() +
-  scale_color_viridis_d(option = "inferno") +
+  theme_dark() +
+  scale_color_viridis_d(option = "AsteroidCity2") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "Goal 3 score",
        y = "Goal 4 score",
@@ -155,13 +155,16 @@ goal_3_goal_4_scatter_plot <- ggplot(data = sdr_data, aes(x= goal_3_score, y = g
 
 ggplotly(goal_3_goal_4_scatter_plot)
 ```
+```{r}
+library("viridis")
+```
 
 
 ```{r}
-goal_4_point <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
-  geom_point(aes(color = Species)) +
-  geom_smooth(aes(color = Species, fill = Species), method = "lm") + 
-  scale_color_viridis(discrete = TRUE, option = "D")+
+goal_3_goal_4_scatter_plot <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+  geom_point(aes(color = "Dark2")) +
+  geom_smooth(aes(color = "Dark2", fill = "Dark2"), method = "lm") + 
+  scale_color_viridis(discrete = TRUE, option = "C")+
   scale_fill_viridis(discrete = TRUE) +
   theme_minimal() +
   theme(legend.position = "bottom") +
@@ -170,7 +173,7 @@ goal_4_point <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, c
        y = "Number of Countries",
        fill = "Region")
 
-ggplotly(goal_4_point)
+ggplotly(goal_3_goal_4_scatter_plot)
   
 
 ```
@@ -309,14 +312,14 @@ Awesome! We're ready to make a map
 ```{r}
 mytext <- paste(
     "Country: ", sdr_data_world_joined$country,"<br/>", 
-    "Goal 7 Score: ", round(sdr_data_world_joined$goal_7_score, 2), 
+    "Goal 8 Score: ", round(sdr_data_world_joined$goal_8_score, 2), 
     sep="") %>%
   lapply(htmltools::HTML)
 
 leaflet(sdr_data_world_joined) %>% 
   addTiles()  %>% 
-  setView( lat=10, lng=0 , zoom=2) %>%
-  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("magma", goal_10_score)(goal_10_score), label = mytext)
+  setView( lat=10, lng=0 , zoom=1) %>%
+  addPolygons(stroke = FALSE, fillOpacity = 5.5, smoothFactor = .5, color = ~colorQuantile("Dark2", goal_8_score)(goal_8_score), label = mytext)
 ```
 #### <span style="color: red;">Challenge 2</span>
 
