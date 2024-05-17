@@ -1,0 +1,207 @@
+---
+title: "Final Project"
+author: "Hamana Leong"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+
+<img src="`r here::here('logos/SpiceLogo1.png')`" width="240" /> <img src="`r here::here('logos/cifal_logo.png')`" width="200" /> <img src="`r here::here('logos/HAB-50th-transp-web.png')`" width="200" />
+
+
+### Welcome to my final project
+
+
+### Setup
+
+Loading in our Libraries
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) # most popular R package
+library(here) # cuts out long file paths when reading in data (makes reproducible)
+library(janitor) # cleans column names
+library(naniar) # analyzes missing data
+#library(missForest)
+library(cluster) 
+library(randomForest) # runs random forest algorithm
+library(missRanger) # imputes data through with random forest method
+library(factoextra) # visualizes clusters
+library(pdp)
+library(vembedr)
+library(plotly)
+library(rnaturalearth)
+library(leaflet)
+library(sf)
+library(vembedr)
+library(ggplot2)
+library(melt)
+library(reshape2)
+library(gganimate)
+library(ggcorrplot)
+```
+
+Read in 2023 Sustainable Development Data with *read_csv()* and *here()*
+
+
+```{r, message=FALSE}
+sdr_data <- read_csv(here("data/SDR-2023-Data.csv"))
+```
+
+
+
+Clean column names with clean_names() from the janitor package
+
+```{r}
+sdr_data <- sdr_data %>% 
+  clean_names()
+```
+
+
+
+We are going to take a look at the LAC data by creating a new data frame from our original data set sdr_data, that only includes countries in Latin America and the Caribbean. We are going to rename it LAC_sdr_data wit the filter() function.
+
+```{r}
+LAC_sdr_data <- sdr_data %>%
+  filter(regions_used_for_the_sdr == "LAC")
+```
+
+Now there is a data set specifically with just the LAC region data in our environment however, we want to see the total scores for each goal.
+
+
+
+
+We are going to create a new data frame (LAC_sdr_scores) that only contains overall goal scores, not indicator scores, for each goal and each country in th LAC region
+
+
+```{r}
+LAC_sdr_scores <- LAC_sdr_data %>%
+  select(
+    goal_1_score, goal_2_score, goal_3_score, goal_4_score, goal_5_score,
+    goal_6_score, goal_7_score, goal_8_score, goal_9_score, goal_10_score,
+    goal_11_score, goal_12_score, goal_13_score, goal_14_score, goal_15_score,
+    goal_16_score, goal_17_score
+  )
+```
+
+
+
+
+
+You should now see it in your environment bringing the variable down from 666 to 17 
+
+
+Now we are going to put it into ggplot with goal 3 "Good health and well being scores"
+ We are going to see the values by inputting a geom_bar(stat = "identity")
+
+```{r}
+ggplot(LAC_sdr_data, aes(x= goal_14_score, y = country)) +
+  geom_bar(stat = "identity")
+
+```
+
+
+
+
+
+Lets create a histogram from our LAC data set to pull SDG 14 Scores and we are going to fill with country code so we can see the countries in the LAC region.
+
+```{r}
+ggplot(LAC_sdr_data, aes(x = goal_14_score, fill=country_code_iso3)) +
+  geom_histogram() +
+  theme_minimal()
+```
+
+
+We are going to clean up the graph by using labels.
+
+
+```{r}
+ggplot(LAC_sdr_data, aes(x = goal_14_score, fill=country_code_iso3)) +
+  geom_histogram() +
+  theme_minimal() +
+  labs(title = "Distributions in LAC region",
+       x = "SDG 14 Score",
+       y = "Number of Countries",
+       fill = "Countries")
+```
+
+
+
+Lets make it interactive by putting in ggplotly and by adding a name to it.
+
+We are going to label it 
+
+
+
+```{r}
+Goal_14_Score <- ggplot(LAC_sdr_data, aes(x = goal_14_score, fill=country_code_iso3)) +
+  geom_histogram() +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "inferno") +
+  labs(title = "Life below water scores",
+       x = "SDG 14 Score",
+       y = "Number of Countries",
+       fill = "Countries")
+ggplotly(Goal_14_Score)
+```
+
+
+These are goal 14 overall scores for the countries in the LAC region. Three counrties are above the 80% mark which makes them 
+
+
+```{r}
+Goal_15_Score <- ggplot(LAC_sdr_data, aes(x = goal_15_score, fill=country_code_iso3)) +
+  geom_histogram() +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "inferno") +
+  labs(title = "Life on land scores",
+       x = "SDG 15 Score",
+       y = "Number of Countries",
+       fill = "Countries")
+ggplotly(Goal_15_Score)
+```
+
+
+
+
+
+
+```{r}
+Goal_14_and_15_Score <- ggplot(LAC_sdr_data, aes(x = goal_14_score, y = goal_15_score, label = country)) +
+  geom_point() +
+  geom_smooth() +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "inferno") +
+  labs(title = "SDG 14 & 15  ",
+       x = "SDG 14 Score",
+       y = "SDG 15 Score",
+       fill = "Countries")
+ggplotly(Goal_14_and_15_Score)
+```
+
+
+
+
+```{r}
+ggplot(LAC_sdr_data, aes(x = goal_14_score, y = goal_15_score)) +
+  geom_point() +
+  geom_smooth() +
+  stat_cor(output.type = "text", label.sep = '\n') +
+  theme_minimal()
+```
+This graph shows a positive correlation of SDG score 14 & 15 in th LAC region because its statistically tested.
+
+
+
+
+
+
+
+
+
+
+
+
